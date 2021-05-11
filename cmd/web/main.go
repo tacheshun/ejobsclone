@@ -5,6 +5,7 @@ import (
 	"flag"
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/tacheshun/ejobsclone/pkg/models/repository"
+	"html/template"
 	"log"
 	"net/http"
 	"os"
@@ -14,6 +15,7 @@ type application struct {
 	errorLog *log.Logger
 	infoLog *log.Logger
 	ads *repository.AdModel
+	templateCache map[string]*template.Template
 }
 
 func main()  {
@@ -29,16 +31,22 @@ func main()  {
 	}
 	defer db.Close()
 
+	templateCache, err := newTemplateCache("./ui/html/")
+	if err != nil {
+		errorLog.Fatal(err)
+	}
+
 	app := &application{
 		errorLog: errorLog,
 		infoLog: infoLog,
 		ads: &repository.AdModel{DB: db},
+		templateCache: templateCache,
 	}
 
 	srv := &http.Server{
 		Addr: *addr,
 		ErrorLog: errorLog,
-		Handler: app.routes(), // Call the new app.routes() method
+		Handler: app.routes(),
 	}
 
 	infoLog.Printf("Starting server on %s", *addr)

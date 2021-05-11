@@ -3,6 +3,23 @@
 {{define "title"}}Home{{end}}
 
 {{define "main"}}
-        <h2>Ultimele joburi adaugate</h2>
-        <p>Nu exista joburi adaugate!</p>
+<h2>Latest Job Ads</h2>
+{{if .Ads}}
+<table>
+        <tr>
+                <th>Title</th>
+                <th>Created</th>
+                <th>ID</th>
+        </tr>
+        {{range .Ads}}
+        <tr>
+                <td><a href='/ad?id={{.ID}}'>{{.Title}}</a></td>
+                <td>{{humanDate .Created}}</td>
+                <td>#{{.ID}}</td>
+        </tr>
+        {{end}}
+</table>
+{{else}}
+<p>There's nothing to see here... yet!</p>
+{{end}}
 {{end}}
