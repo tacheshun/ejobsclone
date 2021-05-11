@@ -4,16 +4,16 @@ services:
     image: mysql:5.7
     restart: always
     environment:
-      MYSQL_DATABASE: 'db'
-      MYSQL_USER: 'user'
-      MYSQL_PASSWORD: 'password'
-      MYSQL_ROOT_PASSWORD: 'password'
+      MYSQL_DATABASE: 'ejobs'
+      MYSQL_USER: 'marius'
+      MYSQL_PASSWORD: 'magic'
+      MYSQL_ROOT_PASSWORD: '123'
     ports:
       - '3306:3306'
     expose:
       - '3306'
     volumes:
-      - my-db:/var/lib/mysql
+      - my-db:/var/lib/repository
 
 volumes:
   my-db:
