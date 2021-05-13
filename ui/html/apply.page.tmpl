@@ -1,0 +1,21 @@
+{{template "base" .}}
+
+{{define "title"}}Atasaza CV{{end}}
+
+{{define "main"}}
+<form action='/job/apply' method='POST'>
+    <input type='hidden' name='csrf_token' value='{{.CSRFToken}}'>
+    {{with .Form}}
+    <div>
+        <label>Atasaza CV:</label>
+        {{with .Errors.Get "cv"}}
+        <label class='error'>{{.}}</label>
+        {{end}}
+        <input type='file' name='cv'>
+    </div>
+    <div>
+        <input type='submit' value='Trimite CV'>
+    </div>
+    {{end}}
+</form>
+{{end}}

@@ -11,8 +11,11 @@
     </div>
     <pre><code>{{.Content}}</code></pre>
     <div class='metadata'>
-        <time>Created: {{humanDate .Created}}</time>
-        <time>Expires: {{humanDate .Expires}}</time>
+        <time>Creat la: {{humanDate .Created}}</time>
+        <time>Expira la: {{humanDate .Expires}}</time>
+    </div>
+    <div class='metadata'>
+    <a class="button" href="/apply">Aplica la job</a>
     </div>
 </div>
 {{end}}

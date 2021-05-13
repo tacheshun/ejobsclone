@@ -7,28 +7,28 @@
     <input type='hidden' name='csrf_token' value='{{.CSRFToken}}'>
     {{with .Form}}
     <div>
-        <label>Name:</label>
+        <label>Nume:</label>
         {{with .Errors.Get "name"}}
         <label class='error'>{{.}}</label>
         {{end}}
-        <input type='text' name='name' value='{{.Get "name"}}'>
+        <input type='text' placeholder='nume' name='name' value='{{.Get "name"}}'>
     </div>
     <div>
         <label>Email:</label>
         {{with .Errors.Get "email"}}
         <label class='error'>{{.}}</label>
         {{end}}
-        <input type='email' name='email' value='{{.Get "email"}}'>
+        <input type="email" placeholder="email" name='email' value='{{.Get "email"}}'>
     </div>
     <div>
-        <label>Password:</label>
+        <label>Parola:</label>
         {{with .Errors.Get "password"}}
         <label class='error'>{{.}}</label>
         {{end}}
-        <input type='password' name='password'>
+        <input type='password' placeholder="parola" name='password'>
     </div>
     <div>
-        <input type='submit' value='Signup'>
+        <input type='submit' value='Inregistrare'>
     </div>
     {{end}}
 </form>

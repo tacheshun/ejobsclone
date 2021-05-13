@@ -7,31 +7,30 @@
     <input type='hidden' name='csrf_token' value='{{.CSRFToken}}'>
     {{with .Form}}
     <div>
-        <label>Title:</label>
+        <label>Titlu:</label>
         {{with .Errors.Get "title"}}
         <label class='error'>{{.}}</label>
         {{end}}
-        <input type='text' name='title' value='{{.Get "title"}}'>
+        <input type='text' placeholder='titlu anunt' name='title' value='{{.Get "title"}}'>
     </div>
     <div>
-        <label>Content:</label>
+        <label>Continut:</label>
         {{with .Errors.Get "content"}}
         <label class='error'>{{.}}</label>
         {{end}}
-        <textarea name='content'>{{.Get "content"}}</textarea>
+        <textarea placeholder='continut anunt' name='content'>{{.Get "content"}}</textarea>
     </div>
     <div>
-        <label>Delete in:</label>
+        <label>Expira in:</label>
         {{with .Errors.Get "expires"}}
         <label class='error'>{{.}}</label>
         {{end}}
         {{$exp := or (.Get "expires") "365"}}
-        <input type='radio' name='expires' value='365' {{if (eq $exp "365")}}checked{{end}}> One Year
-        <input type='radio' name='expires' value='7' {{if (eq $exp "7")}}checked{{end}}> One Week
-        <input type='radio' name='expires' value='1' {{if (eq $exp "1")}}checked{{end}}> One Day
+        <input type='radio' name='expires' value='365' {{if (eq $exp "365")}}checked{{end}}> Un an
+        <input type='radio' name='expires' value='30' {{if (eq $exp "30")}}checked{{end}}> O luna
     </div>
     <div>
-        <input type='submit' value='Publish ad'>
+        <input type='submit' value='Publica job'>
     </div>
     {{end}}
 </form>

@@ -18,6 +18,8 @@ func (app *application) routes() http.Handler {
 	mux.Get("/job/create", dynamicMiddleware.Append(app.requireAuthentication).ThenFunc(app.createAdForm))
 	mux.Post("/job/create", dynamicMiddleware.Append(app.requireAuthentication).ThenFunc(app.createAd))
 	mux.Get("/job/:id", dynamicMiddleware.ThenFunc(app.showAd))
+	mux.Get("/apply", dynamicMiddleware.ThenFunc(app.applyMessage))
+	mux.Post("/job/apply", dynamicMiddleware.ThenFunc(app.apply))
 
 	mux.Get("/user/signup", dynamicMiddleware.ThenFunc(app.signupUserForm))
 	mux.Post("/user/signup", dynamicMiddleware.ThenFunc(app.signupUser))

@@ -59,7 +59,7 @@ func (app *application) createAd(w http.ResponseWriter, r *http.Request) {
 	form := forms.New(r.PostForm)
 	form.Required("title", "content", "expires")
 	form.MaxLength("title", 100)
-	form.PermittedValues("expires", "365", "7", "1")
+	form.PermittedValues("expires", "365", "30")
 
 	if !form.Valid() {
 		app.render(w, r, "create.page.tmpl", &templateData{Form: form})
@@ -103,7 +103,7 @@ func (app *application) signupUser(w http.ResponseWriter, r *http.Request) {
 	err = app.users.Insert(form.Get("name"), form.Get("email"), form.Get("password"))
 	if err != nil {
 		if errors.Is(err, models.ErrDuplicateEmail) {
-			form.Errors.Add("email", "Address is already in use")
+			form.Errors.Add("email", "Adresa deja exista in baza de date")
 			app.render(w, r, "signup.page.tmpl", &templateData{Form: form})
 		} else {
 			app.serverError(w, err)
@@ -111,7 +111,7 @@ func (app *application) signupUser(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	app.session.Put(r, "flash", "Your signup was successful. Please log in.")
+	app.session.Put(r, "flash", "Inregistrare cu succes. Avum va puteti loga.")
 
 	http.Redirect(w, r, "/user/login", http.StatusSeeOther)
 }
@@ -133,7 +133,7 @@ func (app *application) loginUser(w http.ResponseWriter, r *http.Request) {
 	id, err := app.users.Authenticate(form.Get("email"), form.Get("password"))
 	if err != nil {
 		if errors.Is(err, models.ErrInvalidCredentials) {
-			form.Errors.Add("generic", "Email or Password is incorrect")
+			form.Errors.Add("generic", "Email sau Parola incorecte")
 			app.render(w, r, "login.page.tmpl", &templateData{Form: form})
 		} else {
 			app.serverError(w, err)
@@ -148,7 +148,7 @@ func (app *application) loginUser(w http.ResponseWriter, r *http.Request) {
 
 func (app *application) logoutUser(w http.ResponseWriter, r *http.Request) {
 	app.session.Remove(r, "authenticatedUserID")
-	app.session.Put(r, "flash", "You've been logged out successfully!")
+	app.session.Put(r, "flash", "Sesiunea s-a incheiat")
 	http.Redirect(w, r, "/", http.StatusSeeOther)
 }
 
@@ -187,7 +187,7 @@ func (app *application) changePassword(w http.ResponseWriter, r *http.Request) {
 	form.Required("currentPassword", "newPassword", "newPasswordConfirmation")
 	form.MinLength("newPassword", 10)
 	if form.Get("newPassword") != form.Get("newPasswordConfirmation") {
-		form.Errors.Add("newPasswordConfirmation", "Passwords do not match")
+		form.Errors.Add("newPasswordConfirmation", "Parolele nu coincid")
 	}
 
 	if !form.Valid() {
@@ -200,7 +200,7 @@ func (app *application) changePassword(w http.ResponseWriter, r *http.Request) {
 	err = app.users.ChangePassword(userID, form.Get("currentPassword"), form.Get("newPassword"))
 	if err != nil {
 		if errors.Is(err, models.ErrInvalidCredentials) {
-			form.Errors.Add("currentPassword", "Current password is incorrect")
+			form.Errors.Add("currentPassword", "Parola curenta este incorecta")
 			app.render(w, r, "password.page.tmpl", &templateData{Form: form})
 		} else if err != nil {
 			app.serverError(w, err)
@@ -208,8 +208,35 @@ func (app *application) changePassword(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	app.session.Put(r, "flash", "Your password has been updated!")
+	app.session.Put(r, "flash", "Parola a fost actualizata cu succesd!")
 	http.Redirect(w, r, "/user/profile", http.StatusSeeOther)
+}
+
+func(app *application) apply(w http.ResponseWriter, r *http.Request) {
+	err := r.ParseForm()
+	if err != nil {
+		app.clientError(w, http.StatusBadRequest)
+		return
+	}
+
+	form := forms.New(r.PostForm)
+	form.Required("cv")
+
+	if !form.Valid() {
+		app.render(w, r, "apply.page.tmpl", &templateData{Form: form})
+		return
+	}
+
+
+	app.session.Put(r, "flash", "Ai aplicat cu succes!")
+
+	http.Redirect(w, r, "/", http.StatusSeeOther)
+}
+
+func (app *application) applyMessage(w http.ResponseWriter, r *http.Request) {
+	app.render(w, r, "apply.page.tmpl", &templateData{
+		Form: forms.New(nil),
+	})
 }
 
 func ping(w http.ResponseWriter, r *http.Request) {
