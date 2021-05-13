@@ -1,6 +1,7 @@
 package main
 
 import (
+	"github.com/tacheshun/ejobsclone/pkg/forms"
 	"github.com/tacheshun/ejobsclone/pkg/models"
 	"html/template"
 	"path/filepath"
@@ -8,13 +9,22 @@ import (
 )
 
 type templateData struct {
-	CurrentYear int
-	Ad *models.Ad
-	Ads []*models.Ad
+	CSRFToken       string
+	CurrentYear     int
+	Flash           string
+	Form            *forms.Form
+	IsAuthenticated bool
+	Ad              *models.Ad
+	Ads             []*models.Ad
+	User            *models.User
 }
 
 func humanDate(t time.Time) string {
-	return t.Format("02 Jan 2006 at 15:04")
+	if t.IsZero() {
+		return ""
+	}
+
+	return t.UTC().Format("02 Jan 2006 at 15:04")
 }
 
 var functions = template.FuncMap{

@@ -3,23 +3,24 @@
 {{define "title"}}Home{{end}}
 
 {{define "main"}}
-<h2>Latest Job Ads</h2>
+<h2>Ultimele joburi adaugate</h2>
 {{if .Ads}}
 <table>
         <tr>
-                <th>Title</th>
-                <th>Created</th>
+                <th>Titlu</th>
+                <th>Creat la</th>
                 <th>ID</th>
         </tr>
         {{range .Ads}}
         <tr>
-                <td><a href='/ad?id={{.ID}}'>{{.Title}}</a></td>
+                <!-- Use the new semantic URL style-->
+                <td><a href='/job/{{.ID}}'>{{.Title}}</a></td>
                 <td>{{humanDate .Created}}</td>
                 <td>#{{.ID}}</td>
         </tr>
         {{end}}
 </table>
 {{else}}
-<p>There's nothing to see here... yet!</p>
+<p>Niciun job adaugat deocamdata!</p>
 {{end}}
 {{end}}

@@ -65,5 +65,4 @@ func (m *AdModel) Latest() ([]*models.Ad, error) {
 	}
 
 	return ads, nil
-
 }
