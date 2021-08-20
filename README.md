@@ -1,2 +1,2 @@
 # ejobsclone
-Project for DAW module
+Project for DAW module at university
